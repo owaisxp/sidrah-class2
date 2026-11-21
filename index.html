@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sidrah Academy Class 2</title>
+<meta name="description" content="Class 2 lessons, quizzes and progress for Sidrah Academy. Works offline.">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#22303C">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Sidrah Class 2">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<script>
+/* Catch Chrome's install offer as early as possible so the Install button can use it. */
+window.__bip = null;
+addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); window.__bip = e; document.dispatchEvent(new Event('bip')); });
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;600&family=Noto+Naskh+Arabic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: warm, encouraging, simple words for 7-year-olds; calm and tidy for parents and teachers
+   IDEA: the classroom slate board under a Basant sky over Jhelum
+   PICTURE: a saffron kite that climbs its string as the child practises during the week
+   COLOUR and TYPE: slate #22303C, chalk #F7F3E8, saffron #F2A007, kite red #D9483B; Fredoka + Nunito, Nastaliq for Urdu
+   LAYOUT: phone-first app shell: slate top bar, one column of big touch cards, bottom tab bar */
+:root{--bg:#F7F3E8;--card:#fff;--ink:#1d262e;--mute:#5a6873;--line:#e4dccb;--sky:#cfe7f5;--hill:#a9cf8e;--hill2:#8fbf74;--slate:#22303C;--chalk:#F7F3E8;--saffron:#F2A007;--red:#D9483B;--ok:#23874d;--bad:#c8392c;--okbg:#e3f4e9;--badbg:#fbe7e4}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#121a21;--card:#1c2731;--ink:#eef0ea;--mute:#a5b2bc;--line:#2e3d4a;--sky:#1d3445;--hill:#2d4a37;--hill2:#26402f;--okbg:#173a27;--badbg:#3d1f1c;--ok:#5cc98a;--bad:#f07a6e}}
+:root[data-theme=dark]{--bg:#121a21;--card:#1c2731;--ink:#eef0ea;--mute:#a5b2bc;--line:#2e3d4a;--sky:#1d3445;--hill:#2d4a37;--hill2:#26402f;--okbg:#173a27;--badbg:#3d1f1c;--ok:#5cc98a;--bad:#f07a6e}
+*{box-sizing:border-box;min-width:0}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Nunito,system-ui,sans-serif;overflow-x:clip}
+a{color:inherit}
+h1,h2,h3{font-family:Fredoka,Nunito,sans-serif;font-weight:600;line-height:1.1;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,7vw,44px)}
+h2{font-size:22px;margin:28px 0 12px}
+h3{font-size:18px}
+p{margin:6px 0}
+.mute{color:var(--mute)}.small{font-size:14px}
+.ur{font-family:'Noto Nastaliq Urdu',serif;line-height:2.2}
+.ar{font-family:'Noto Naskh Arabic',serif;font-size:1.2em}
+/* top bar */
+.top{position:sticky;top:0;z-index:6;background:var(--slate);color:var(--chalk);display:flex;align-items:center;gap:10px;padding:10px max(16px,env(safe-area-inset-left))}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:Fredoka,Nunito,sans-serif;font-weight:600;font-size:18px;line-height:1.1}
+.brand>span{overflow:hidden}.brand .long{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand small{display:block;font-family:Nunito,sans-serif;font-weight:700;font-size:12px;opacity:.75}
+.sp{flex:1}
+/* buttons and inputs */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:10px 20px;border-radius:14px;border:2px solid transparent;background:var(--saffron);color:#231802;font:800 16px Nunito,sans-serif;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn.ghost{background:transparent;border-color:var(--line);color:var(--ink)}
+.btn.dark{background:var(--slate);color:var(--chalk)}
+.btn.red{background:var(--bad);color:#fff}
+.btn.sm{min-height:44px;padding:8px 14px;font-size:14px}
+.top .btn.ghost{color:var(--chalk);border-color:rgba(255,255,255,.3)}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.5;cursor:default}
+:focus-visible{outline:3px solid var(--saffron);outline-offset:2px}
+input,select,textarea{width:100%;font:16px Nunito,sans-serif;min-height:48px;padding:10px 14px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink)}
+textarea{min-height:120px}
+label{display:block;font-weight:800;font-size:14px;margin:12px 0 4px}
+/* layout */
+main{max-width:980px;margin:0 auto;padding:20px 16px 120px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,160px),1fr))}
+.grid2{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:20px;align-items:center}
+.kite svg{display:block;width:100%;height:auto;border-radius:22px}
+.kite-body{animation:bob 3.2s ease-in-out infinite;transform-origin:center}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-5px) rotate(2deg)}}
+.glyph{flex:none;width:52px;height:52px;border-radius:15px;display:grid;place-items:center;color:#fff;font:700 19px Fredoka,sans-serif}
+.glyph.rtl{font-family:'Noto Nastaliq Urdu',serif;font-size:17px;line-height:1}
+.tile{display:flex;flex-direction:column;gap:10px;text-decoration:none;color:var(--ink);min-height:150px}
+.tile .nm{font-family:Fredoka,Nunito,sans-serif;font-weight:600;font-size:18px;line-height:1.15}
+.item{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--ink);padding:14px 16px;border-bottom:1px solid var(--line);min-height:64px}
+.item:last-child{border-bottom:0}
+.item .grow{flex:1}
+.list{padding:0;overflow:hidden}
+.bar{height:10px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--saffron);border-radius:99px}
+.stats{display:grid;gap:10px;grid-template-columns:repeat(4,minmax(0,1fr))}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px}
+.stat b{display:block;font:700 clamp(24px,6vw,32px)/1.1 Fredoka,sans-serif;white-space:nowrap}
+.stat span{font-size:14px;color:var(--mute);font-weight:700}
+.pill{display:inline-block;padding:3px 10px;border-radius:99px;font-weight:800;font-size:13px;background:var(--line);color:var(--ink)}
+/* bottom nav */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;gap:4px;padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+.nav a{flex:1;max-width:130px;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:14px;color:var(--mute);text-decoration:none;font-weight:800;font-size:12px}
+.nav a.on{color:var(--ink);background:rgba(242,160,7,.2)}
+.nav svg{width:24px;height:24px}
+/* quiz */
+.qhead{display:flex;align-items:center;gap:12px;justify-content:space-between}
+.dots{display:flex;gap:6px;flex-wrap:wrap}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--line)}
+.dots i.ok{background:var(--ok)}.dots i.no{background:var(--bad)}.dots i.now{outline:3px solid var(--saffron);outline-offset:1px}
+.qtext{font:600 clamp(22px,5.5vw,30px)/1.35 Fredoka,sans-serif;margin:18px 0 20px;overflow-wrap:anywhere}
+.qtext.ur{font-family:'Noto Nastaliq Urdu',serif;font-weight:400;line-height:2.3}
+.opts{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.opt{min-height:72px;padding:12px 14px;border-radius:18px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:800 19px Nunito,sans-serif;cursor:pointer;overflow-wrap:anywhere}
+.opt:hover{border-color:var(--saffron)}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}
+.opt.no{border-color:var(--bad);background:var(--badbg)}
+.opt.ur{font-family:'Noto Nastaliq Urdu',serif;font-weight:400;line-height:2}
+.opt.ar{font-family:'Noto Naskh Arabic',serif;font-size:26px}
+.fb{margin-top:16px;padding:16px;border-radius:18px;font-weight:700}
+.fb.ok{background:var(--okbg)}.fb.no{background:var(--badbg)}
+.fb b{font-family:Fredoka,Nunito,sans-serif;font-size:22px;display:block}
+.score{font:700 clamp(56px,16vw,96px)/1 Fredoka,sans-serif}
+.stars svg{width:52px;height:52px}
+/* lesson cards */
+.facts{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr))}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+.fact b{display:block;font-family:Fredoka,Nunito,sans-serif;font-weight:600;font-size:19px;line-height:1.25}
+.fact span{color:var(--mute);font-weight:700}
+/* badges */
+.badges{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr))}
+.badge{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+.badge.off{opacity:.45}
+.badge svg{flex:none;width:44px;height:44px}
+.badge b{display:block;line-height:1.2}.badge span{font-size:13px;color:var(--mute)}
+/* tables */
+table{width:100%;border-collapse:collapse}
+th,td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+th{font-size:13px;color:var(--mute)}
+td.n,th.n{text-align:right;white-space:nowrap}
+tr.me td{background:rgba(242,160,7,.14)}
+tr.click{cursor:pointer}
+.scroll{overflow-x:auto}
+/* login */
+.login{min-height:100vh;background:var(--slate);color:var(--chalk);display:grid;place-items:center;padding:24px 16px}
+.login .box{width:100%;max-width:420px}
+.login .card{color:var(--ink)}
+.login h1{color:var(--chalk);text-align:center}
+.demo{font-size:14px;margin-top:14px;color:var(--mute)}
+.demo code{font-weight:800;color:var(--ink)}
+/* banner, modal, toast */
+.banner{display:flex;flex-wrap:wrap;align-items:center;gap:14px;background:var(--slate);color:var(--chalk);border-radius:20px;padding:14px 16px;margin:18px 0}
+.banner img{width:48px;height:48px;border-radius:12px;flex:none}
+.banner .grow{flex:1 1 200px}
+.modal{position:fixed;inset:0;z-index:20;background:rgba(8,12,16,.6);display:none;align-items:flex-end;justify-content:center;padding:12px}
+.modal.on{display:flex}
+.sheet{width:100%;max-width:540px;max-height:88vh;overflow:auto;background:var(--card);color:var(--ink);border-radius:24px;padding:22px}
+.sheet ol{padding-left:22px}.sheet li{margin:6px 0}
+.warn{background:rgba(242,160,7,.18);border-radius:14px;padding:12px 14px;font-weight:700}
+.toast{position:fixed;left:50%;top:78px;transform:translateX(-50%);z-index:30;background:var(--slate);color:var(--chalk);padding:12px 18px;border-radius:14px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}
+.toast.on{opacity:1}
+.week{display:flex;align-items:flex-end;gap:8px;height:120px}
+.week div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%;font-size:12px;font-weight:800;color:var(--mute)}
+.week i{display:block;width:100%;max-width:36px;background:var(--saffron);border-radius:8px 8px 3px 3px;min-height:3px}
+.print-only{display:none}
+@media (max-width:640px){
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:440px){.opts{grid-template-columns:minmax(0,1fr)}.top .btn.sm{padding:8px 10px}}
+@media(max-width:600px){table{font-size:14px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--line)}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;color:var(--mute);font-weight:700}.stack td:empty{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{.top,.nav,.noprint,.banner,.toast,.modal{display:none!important}.print-only{display:block}body{background:#fff;color:#000}main{padding:0}.card,.stat,.badge{border-color:#999}}
+</style>
+<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+</head>
+<body>
+<div id="app"></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="data.js"></script>
+<script>
+{
+const SUBJ = SA.SUBJ, SMAP = SA.SMAP, CMAP = SA.CMAP, BANK = SA.BANK, shuffle = SA.shuffle;
+const QMAP = {}; BANK.forEach(q => { QMAP[q.id] = q; });
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const app = $('#app');
+
+/* ---------- storage (falls back to memory if the browser blocks it) ---------- */
+const mem = {};
+const DB = {
+  get(k, d) { try { const v = localStorage.getItem('sa2.' + k); if (v != null) return JSON.parse(v); } catch (e) {} return k in mem ? mem[k] : d; },
+  set(k, v) { mem[k] = v; try { localStorage.setItem('sa2.' + k, JSON.stringify(v)); } catch (e) {} },
+  del(k) { delete mem[k]; try { localStorage.removeItem('sa2.' + k); } catch (e) {} }
+};
+
+/* ---------- passwords: salted hash, kept on this device only ---------- */
+function hash(pw, salt) {
+  const s = salt + ':' + pw; let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+  for (let i = 0; i < s.length; i++) { const ch = s.charCodeAt(i); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); }
+  for (let r = 0; r < 1000; r++) { h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909); h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909); }
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(16);
+}
+const uid = () => 'u' + Math.random().toString(36).slice(2, 10);
+function mkUser(u, name, role, extra) { const salt = Math.random().toString(36).slice(2, 10); return Object.assign({ id: uid(), u, name, role, salt, h: hash('123456', salt) }, extra || {}); }
+
+function seed() {
+  if (DB.get('users')) return;
+  const umair = mkUser('umair', 'Umair', 'student');
+  const sample = ['Ayesha Khan', 'Hamza Ali', 'Fatima Noor', 'Zain Ahmed', 'Maryam Iqbal'].map(n => mkUser(n.split(' ')[0].toLowerCase(), n, 'student', { sample: 1 }));
+  const users = [umair, ...sample, mkUser('parent', "Umair's parent", 'parent', { child: umair.id }), mkUser('teacher', 'Class teacher', 'teacher'), mkUser('admin', 'Administrator', 'admin')];
+  DB.set('users', users);
+  const r = SA.rng(7), att = [], now = Date.now();
+  sample.forEach((x, i) => {
+    const skill = 0.58 + i * 0.07;
+    for (let d = 0; d < 12; d++) {
+      if (r() < 0.3) continue;
+      const n = 5 + Math.floor(r() * 16);
+      for (let k = 0; k < n; k++) { const q = BANK[Math.floor(r() * BANK.length)]; att.push([x.id, q.s, q.c, r() < skill ? 1 : 0, now - d * 864e5 - Math.floor(r() * 4e6)]); }
+    }
+  });
+  DB.set('att', att);
+  DB.set('school', 'Sidrah Academy');
+}
+seed();
+
+const users = () => DB.get('users', []);
+const saveUsers = u => DB.set('users', u);
+const userById = id => users().find(u => u.id === id);
+const me = () => { const s = DB.get('sess'); return s ? userById(s) : null; };
+const school = () => DB.get('school', 'Sidrah Academy');
+
+/* ---------- stats ---------- */
+const dstr = ts => { const d = new Date(ts); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+function stats(id) {
+  const a = DB.get('att', []).filter(x => x[0] === id);
+  const s = { total: a.length, right: 0, bySubj: {}, byCh: {}, days: new Set(), last: 0, week: 0 };
+  const weekAgo = Date.now() - 7 * 864e5;
+  a.forEach(x => {
+    s.right += x[3];
+    const b = s.bySubj[x[1]] || (s.bySubj[x[1]] = { t: 0, r: 0 }); b.t++; b.r += x[3];
+    const c = s.byCh[x[2]] || (s.byCh[x[2]] = { t: 0, r: 0 }); c.t++; c.r += x[3];
+    s.days.add(dstr(x[4])); if (x[4] > s.last) s.last = x[4]; if (x[4] > weekAgo) s.week++;
+  });
+  s.acc = s.total ? Math.round(s.right / s.total * 100) : 0;
+  let streak = 0; const d = new Date();
+  if (!s.days.has(dstr(d))) d.setDate(d.getDate() - 1);
+  while (s.days.has(dstr(d))) { streak++; d.setDate(d.getDate() - 1); }
+  s.streak = streak;
+  s.subjCount = Object.keys(s.bySubj).length; s.chCount = Object.keys(s.byCh).length;
+  s.score = s.right * 10 + s.acc * 2 + s.streak * 25;
+  return s;
+}
+const BADGES = [
+  ['First step', 'Answer your first question', s => s.total >= 1],
+  ['Ten up', 'Answer 10 questions', s => s.total >= 10],
+  ['Fifty club', 'Answer 50 questions', s => s.total >= 50],
+  ['Century', 'Answer 100 questions', s => s.total >= 100],
+  ['Champion', 'Answer 500 questions', s => s.total >= 500],
+  ['Sharp shooter', '80% correct after 20 questions', s => s.total >= 20 && s.acc >= 80],
+  ['Ace', '90% correct after 50 questions', s => s.total >= 50 && s.acc >= 90],
+  ['On a roll', 'Practise 3 days in a row', s => s.streak >= 3],
+  ['Week warrior', 'Practise 7 days in a row', s => s.streak >= 7],
+  ['Explorer', 'Try 5 different subjects', s => s.subjCount >= 5],
+  ['All-rounder', 'Try all 11 subjects', s => s.subjCount >= 11],
+  ['Book worm', 'Practise 10 different chapters', s => s.chCount >= 10]
+];
+const medal = on => `<svg viewBox="0 0 44 44" aria-hidden="true"><path d="M14 2h7l-4 14h-7zM23 2h7l4 14h-7z" fill="${on ? '#D9483B' : '#9aa6af'}"/><circle cx="22" cy="28" r="14" fill="${on ? '#F2A007' : '#c3ccd2'}"/><path d="M22 19l2.6 5.4 5.9.8-4.3 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="#fff"/></svg>`;
+const star = on => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.6 5.9 20.8 7.1 14l-5-4.8 6.9-.9z" fill="${on ? '#F2A007' : 'var(--line)'}"/></svg>`;
+
+/* ---------- picture: the kite climbs with this week's practice ---------- */
+function kiteSVG(p) {
+  p = Math.max(0, Math.min(1, p));
+  const kx = 120 + p * 170, ky = 178 - p * 128;
+  return `<svg viewBox="0 0 360 240" role="img" aria-label="A kite flying ${Math.round(p * 100)}% of the way up the sky">
+  <rect width="360" height="240" fill="var(--sky)"/>
+  <circle cx="300" cy="44" r="22" fill="#F7D774" opacity=".9"/>
+  <g fill="#fff" opacity=".85"><ellipse cx="70" cy="50" rx="34" ry="12"/><ellipse cx="96" cy="42" rx="22" ry="12"/><ellipse cx="220" cy="92" rx="28" ry="9"/></g>
+  <path d="M0 200 Q90 168 180 196 T360 186 V240 H0Z" fill="var(--hill)"/>
+  <path d="M0 222 Q120 200 240 220 T360 214 V240 H0Z" fill="var(--hill2)"/>
+  <path d="M232 204 h40 v-26 l-20 -14 l-20 14z" fill="#e9dcc2"/><path d="M228 180 l24 -18 l24 18" fill="none" stroke="#b35a3a" stroke-width="5" stroke-linejoin="round"/>
+  <g><circle cx="58" cy="176" r="8" fill="#6b4a32"/><path d="M50 186 h16 l3 22 h-22z" fill="var(--slate)"/><path d="M64 190 l12 -8" stroke="var(--slate)" stroke-width="4" stroke-linecap="round"/></g>
+  <path d="M76 182 Q ${kx - 60} ${ky + 90} ${kx} ${ky + 30}" fill="none" stroke="#6d7b86" stroke-width="1.5"/>
+  <g class="kite-body">
+    <path d="M${kx} ${ky - 30} L${kx + 22} ${ky} L${kx} ${ky + 30} L${kx - 22} ${ky}Z" fill="#F2A007"/>
+    <path d="M${kx} ${ky - 30} L${kx + 22} ${ky} L${kx} ${ky}Z M${kx} ${ky} L${kx - 22} ${ky} L${kx} ${ky + 30}Z" fill="#D9483B"/>
+    <path d="M${kx} ${ky - 30} V${ky + 30} M${kx - 22} ${ky} H${kx + 22}" stroke="#F7F3E8" stroke-width="1.5"/>
+    <path d="M${kx} ${ky + 30} q8 10 0 18 q-8 8 0 18" fill="none" stroke="#F7F3E8" stroke-width="1.5"/>
+    <path d="M${kx - 5} ${ky + 44} l10 6 v-6 l-10 6z M${kx - 5} ${ky + 60} l10 6 v-6 l-10 6z" fill="#F2A007"/>
+  </g></svg>`;
+}
+
+/* ---------- small helpers ---------- */
+const AR = /[؀-ۿ]/;
+const langCls = (sid, t) => !AR.test(t) ? '' : (sid === 'urd' ? 'ur' : 'ar');
+const glyph = s => `<span class="glyph ${s.rtl || s.id === 'arb' ? 'rtl' : ''}" style="background:${s.color}" aria-hidden="true">${esc(s.glyph)}</span>`;
+const bar = (pct, col) => `<div class="bar" aria-hidden="true"><i style="width:${Math.max(0, Math.min(100, pct))}%${col ? ';background:' + col : ''}"></i></div>`;
+const ago = ts => { if (!ts) return 'Never'; const d = Math.floor((Date.now() - ts) / 864e5); return d <= 0 ? 'Today' : d === 1 ? 'Yesterday' : d + ' days ago'; };
+let toastT;
+function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2800); }
+function openModal(html) { $('#sheet').innerHTML = html; $('#modal').classList.add('on'); const f = $('#sheet input,#sheet button'); if (f) f.focus(); }
+function closeModal() { $('#modal').classList.remove('on'); }
+function speak(text, lang) { try { const u = new SpeechSynthesisUtterance(text); u.lang = lang || 'en-GB'; u.rate = 0.9; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) { toast('Reading aloud is not available on this device.'); } }
+
+/* ---------- install as an app ---------- */
+const standalone = () => { try { return matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; } catch (e) { return false; } };
+const framed = () => { try { return window.self !== window.top; } catch (e) { return true; } };
+const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent);
+async function doInstall() {
+  if (standalone()) { toast('The app is already installed. You are using it now!'); return; }
+  const p = window.__bip;
+  if (p) {
+    try { p.prompt(); const c = await p.userChoice; window.__bip = null; if (c && c.outcome === 'accepted') toast('Installing… look for Sidrah Class 2 on your home screen.'); } catch (e) { installHelp(); }
+    render(); return;
+  }
+  installHelp();
+}
+function installHelp() {
+  openModal(`<h2 style="margin-top:0">Install the app</h2>
+  ${framed() ? `<p class="warn">You are seeing a preview inside another page. Phones can only install the app from its own web address. Open the app's link directly in Chrome, then tap <b>Install app</b>.</p>` : ''}
+  <h3 style="margin-top:16px">Android phone or tablet (Chrome)</h3>
+  <ol><li>Open this app's link in <b>Chrome</b>.</li><li>Tap the <b>Install app</b> button in this app. If nothing happens, tap Chrome's <b>⋮</b> menu at the top right.</li><li>Choose <b>Install app</b> (or <b>Add to Home screen</b>), then tap <b>Install</b>.</li><li>The kite icon appears on your home screen. Open it like any app; it works without internet.</li></ol>
+  <h3 style="margin-top:16px">iPhone or iPad (Safari)</h3>
+  <ol><li>Open the link in <b>Safari</b>.</li><li>Tap the <b>Share</b> button, then <b>Add to Home Screen</b>.</li></ol>
+  <h3 style="margin-top:16px">Computer (Chrome or Edge)</h3>
+  <ol><li>Click the install icon at the right end of the address bar, then <b>Install</b>.</li></ol>
+  <div class="row" style="margin-top:16px"><button class="btn" data-act="close">Got it</button></div>`);
+}
+function installBtn(cls) {
+  if (standalone()) return '';
+  return `<button class="btn ${cls || ''}" data-act="install"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m0 0l-4-4m4 4l4-4M5 17v3h14v-3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="lbl">Install</span></button>`;
+}
+function installBanner() {
+  if (standalone() || DB.get('hideBanner')) return '';
+  return `<div class="banner noprint"><img src="icons/icon-192.png" alt=""><div class="grow"><b>Put Sidrah Class 2 on your home screen</b><div class="small" style="opacity:.8">Opens like an app and works without internet.</div></div>${installBtn()}<button class="btn ghost sm" style="color:var(--chalk);border-color:rgba(255,255,255,.3)" data-act="hidebanner" aria-label="Hide">Later</button></div>`;
+}
+document.addEventListener('bip', () => { if (me()) render(); });
+addEventListener('appinstalled', () => { window.__bip = null; toast('Installed! Open Sidrah Class 2 from your home screen.'); render(); });
+
+/* ---------- navigation ---------- */
+const ICONS = {
+  home: 'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',
+  book: 'M4 4h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4zM20 4h-6a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h7z',
+  chart: 'M4 20V10M10 20V4M16 20v-8M22 20H2',
+  trophy: 'M7 4h10v5a5 5 0 0 1-10 0zM7 6H3v2a4 4 0 0 0 4 4M17 6h4v2a4 4 0 0 1-4 4M12 14v4M8 21h8',
+  users: 'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0M17 3a4 4 0 0 1 0 8M22 21a7 7 0 0 0-4-6.3',
+  list: 'M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01',
+  gear: 'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-2.9-1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 3 15a1.7 1.7 0 0 0-1-1H2a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 9 4.6V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0 1.2 2.9H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z'
+};
+const NAV = {
+  student: [['home', 'Home', 'home'], ['subjects', 'Subjects', 'book'], ['progress', 'Progress', 'chart'], ['board', 'Leaders', 'trophy']],
+  parent: [['child', 'My child', 'chart'], ['subjects', 'Lessons', 'book'], ['board', 'Class', 'trophy']],
+  teacher: [['class', 'Class', 'users'], ['bank', 'Questions', 'list'], ['subjects', 'Lessons', 'book'], ['board', 'Leaders', 'trophy']],
+  admin: [['users', 'Users', 'users'], ['class', 'Class', 'chart'], ['bank', 'Questions', 'list'], ['settings', 'Settings', 'gear']]
+};
+const HOME = { student: 'home', parent: 'child', teacher: 'class', admin: 'users' };
+const ALLOW = {
+  student: ['home', 'subjects', 'subj', 'ch', 'quiz', 'daily', 'progress', 'board'],
+  parent: ['child', 'subjects', 'subj', 'ch', 'quiz', 'board'],
+  teacher: ['class', 'stu', 'bank', 'subjects', 'subj', 'ch', 'quiz', 'board'],
+  admin: ['users', 'class', 'stu', 'bank', 'settings', 'subjects', 'subj', 'ch', 'quiz', 'board']
+};
+function shell(u, route, body) {
+  const nav = NAV[u.role].map(([h, l, ic]) => `<a href="#${h}" class="${route === h || (h === 'subjects' && (route === 'subj' || route === 'ch')) || (h === 'class' && route === 'stu') ? 'on' : ''}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${ICONS[ic]}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>${l}</a>`).join('');
+  return `<header class="top"><a class="brand" href="#${HOME[u.role]}"><img src="icons/icon-192.png" width="36" height="36" alt="" style="border-radius:9px"><span><span class="long">${esc(school())}</span><small>Class 2 · ${esc(u.name)}</small></span></a><span class="sp"></span>${installBtn('sm')}<button class="btn ghost sm" data-act="logout">Sign out</button></header>
+  <main id="main">${body}</main><nav class="nav noprint" aria-label="Main">${nav}</nav>`;
+}
+
+/* ---------- login ---------- */
+function renderLogin(err) {
+  app.innerHTML = `<div class="login"><div class="box">
+    <div class="kite" style="margin-bottom:18px">${kiteSVG(0.75)}</div>
+    <h1>${esc(school())}</h1><p style="text-align:center;opacity:.8;font-weight:700;margin-bottom:18px">Class 2 learning app</p>
+    <form class="card" id="loginForm" autocomplete="on">
+      <h3>Sign in</h3>
+      <label for="lu">Username</label><input id="lu" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+      <label for="lp">Password</label><input id="lp" name="password" type="password" autocomplete="current-password" required>
+      ${err ? `<p style="color:var(--bad);font-weight:800">${esc(err)}</p>` : ''}
+      <div class="row" style="margin-top:16px"><button class="btn" type="submit" style="flex:1">Sign in</button></div>
+      <p class="demo">Starter accounts (password <code>123456</code>): student <code>umair</code>, parent <code>parent</code>, teacher <code>teacher</code>, admin <code>admin</code>. Change passwords in Admin.</p>
+    </form>
+    <div class="row" style="justify-content:center;margin-top:16px">${installBtn()}</div>
+  </div></div>`;
+}
+
+/* ---------- student home ---------- */
+function viewHome(u) {
+  const s = stats(u.id), goal = 70;
+  const tiles = SUBJ.map(sb => { const b = s.bySubj[sb.id]; return `<a class="card tile" href="#subj-${sb.id}">${glyph(sb)}<span class="nm">${esc(sb.name)}</span><span class="small mute">${b ? b.t + ' answered · ' + Math.round(b.r / b.t * 100) + '%' : sb.chapters.length + ' chapters'}</span>${bar(b ? Math.round(b.r / b.t * 100) : 0, sb.color)}</a>`; }).join('');
+  const hr = new Date().getHours(), greet = hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
+  return `<section class="hero">
+    <div><p class="mute" style="font-weight:800">${greet},</p><h1>${esc(u.name)}</h1>
+      <p style="font-size:18px">${s.streak ? `You have practised <b>${s.streak} day${s.streak > 1 ? 's' : ''} in a row</b>. Keep it going!` : 'Answer a few questions today to start your streak.'}</p>
+      <div class="row" style="margin-top:14px"><button class="btn" data-act="daily">Start daily quiz</button><a class="btn ghost" href="#subjects">Choose a subject</a></div></div>
+    <div class="kite">${kiteSVG(s.week / goal)}<p class="small mute" style="margin-top:8px">This week: <b>${s.week}</b> of ${goal} questions. Your kite flies higher as you practise.</p></div>
+  </section>
+  ${installBanner()}
+  <div class="stats" style="margin-top:20px"><div class="stat"><b>${s.total}</b><span>Questions</span></div><div class="stat"><b>${s.acc}%</b><span>Correct</span></div><div class="stat"><b>${s.streak}</b><span>Day streak</span></div><div class="stat"><b>${BADGES.filter(b => b[2](s)).length}/${BADGES.length}</b><span>Badges</span></div></div>
+  <h2>Your subjects</h2><div class="grid">${tiles}</div>`;
+}
+
+/* ---------- subjects, chapters, lessons ---------- */
+function viewSubjects() {
+  return `<h1>Subjects</h1><p class="mute">${SUBJ.length} subjects · ${SUBJ.reduce((a, s) => a + s.chapters.length, 0)} chapters · ${BANK.length.toLocaleString()} practice questions</p>
+  <div class="grid" style="margin-top:16px">${SUBJ.map(s => `<a class="card tile" href="#subj-${s.id}">${glyph(s)}<span class="nm">${esc(s.name)}${s.sub ? ` <span class="${s.id === 'urd' ? 'ur' : 'ar'}" style="font-size:15px">${s.sub}</span>` : ''}</span><span class="small mute">${s.chapters.length} chapters · ${BANK.filter(q => q.s === s.id).length} questions</span></a>`).join('')}</div>`;
+}
+function viewSubject(u, id) {
+  const s = SMAP[id]; if (!s) return viewSubjects();
+  const st = stats(u.id);
+  return `<div class="row">${glyph(s)}<div><h1>${esc(s.name)}</h1><p class="mute">${s.chapters.length} chapters</p></div></div>
+  <div class="row" style="margin-top:14px"><button class="btn" data-act="quizsubj" data-id="${s.id}">Practise all of ${esc(s.name)}</button></div>
+  <h2>Chapters</h2><div class="card list">${s.chapters.map((c, i) => { const b = st.byCh[c.id]; return `<a class="item" href="#ch-${c.id}"><span class="pill">${i + 1}</span><span class="grow"><b class="${langCls(s.id, c.t)}" dir="auto">${esc(c.t)}</b><br><span class="small mute">${b ? b.t + ' answered · ' + Math.round(b.r / b.t * 100) + '% correct' : 'Not started'}</span></span><span style="width:70px">${bar(b ? Math.round(b.r / b.t * 100) : 0, s.color)}</span></a>`; }).join('')}</div>`;
+}
+function viewChapter(u, id) {
+  const c = CMAP[id]; if (!c) return viewSubjects();
+  const s = SMAP[c.s], rtl = !!s.rtl;
+  let facts = '';
+  (c.sets || []).forEach(set => {
+    facts += `${set.h ? `<h3 style="margin:18px 0 10px">${esc(set.h)}</h3>` : ''}<div class="facts" dir="${rtl ? 'rtl' : 'ltr'}">${set.pairs.map(p => `<div class="fact"><b class="${langCls(s.id, String(p[0]))}" dir="auto">${esc(p[0])}</b><span class="${langCls(s.id, String(p[1]))}" dir="auto">${esc(p[1])}</span></div>`).join('')}</div>`;
+  });
+  if (c.learn) facts += `<div class="facts">${c.learn.map(x => `<div class="fact"><b>${esc(x)}</b></div>`).join('')}</div>`;
+  if (c.gen && !c.learn) facts += `<div class="facts">${BANK.filter(q => q.c === c.id).slice(0, 6).map(q => `<div class="fact"><b>${esc(q.q)}</b><span>${esc(q.a)}</span></div>`).join('')}</div>`;
+  const n = BANK.filter(q => q.c === c.id).length;
+  return `<p class="small"><a href="#subj-${s.id}">${esc(s.name)}</a></p>
+  <h1 class="${langCls(s.id, c.t)}" dir="auto">${esc(c.t)}</h1>
+  <p class="${rtl ? 'ur' : ''}" dir="auto" style="font-size:18px;margin-top:10px">${esc(c.intro)}</p>
+  <div class="row" style="margin-top:14px"><button class="btn" data-act="quizch" data-id="${c.id}">Practise 10 questions</button><button class="btn ghost" data-act="read" data-id="${c.id}">Read aloud</button></div>
+  <p class="small mute" style="margin-top:8px">${n} questions in this chapter</p>
+  <h2>Learn</h2>${facts}`;
+}
+
+/* ---------- quiz ---------- */
+let Q = null;
+function startQuiz(title, qs, back) {
+  Q = { title, qs, i: 0, right: 0, picked: null, log: [], back, done: false };
+  if (location.hash === '#quiz') render(); else location.hash = 'quiz';
+}
+function pickFrom(pool, n) { return shuffle(pool).slice(0, n); }
+function dailyQs() {
+  const out = [], used = new Set();
+  const subj = shuffle(SUBJ.map(s => s.id));
+  for (let k = 0; out.length < 10 && k < 40; k++) {
+    const sid = subj[k % subj.length], pool = BANK.filter(q => q.s === sid && !used.has(q.id));
+    const q = pool[Math.floor(Math.random() * pool.length)]; if (q) { used.add(q.id); out.push(q); }
+  }
+  return out;
+}
+function viewQuiz(u) {
+  if (!Q) return `<h1>No quiz open</h1><p><a class="btn" href="#${HOME[u.role]}">Go home</a></p>`;
+  if (Q.done) {
+    const n = Q.qs.length, st = Q.right >= n * 0.9 ? 3 : Q.right >= n * 0.7 ? 2 : Q.right >= n * 0.5 ? 1 : 0;
+    const msg = ['Good try! Practise again and you will get better.', 'Well done! Keep practising.', 'Great work!', 'Excellent! You are a star!'][st];
+    const wrong = Q.log.filter(x => !x.ok);
+    return `<div class="card" style="text-align:center;padding:28px 16px"><p class="mute" style="font-weight:800">${esc(Q.title)}</p>
+      <div class="score">${Q.right}<span style="font-size:.45em;color:var(--mute)">/${n}</span></div>
+      <div class="stars row" style="justify-content:center;margin:10px 0">${star(st >= 1)}${star(st >= 2)}${star(st >= 3)}</div>
+      <h2 style="margin:6px 0 16px">${msg}</h2>
+      ${u.role !== 'student' ? '<p class="small mute">Practice by non-students is not recorded.</p>' : ''}
+      <div class="row" style="justify-content:center"><button class="btn" data-act="again">Try again</button><a class="btn ghost" href="${esc(Q.back)}">Back</a></div></div>
+      ${wrong.length ? `<h2>Let's learn from these</h2><div class="card list">${wrong.map(x => { const q = QMAP[x.id]; return `<div class="item" style="display:block"><b class="${langCls(q.s, q.q)}" dir="auto">${esc(q.q)}</b><br><span class="small" style="color:var(--bad)">You chose: <span dir="auto">${esc(x.pick)}</span></span><br><span class="small" style="color:var(--ok);font-weight:800">Correct: <span dir="auto">${esc(q.a)}</span></span><br><span class="small mute" dir="auto">${esc(q.e)}</span></div>`; }).join('')}</div>` : ''}`;
+  }
+  const q = Q.qs[Q.i], s = SMAP[q.s], ch = CMAP[q.c];
+  const dots = Q.qs.map((_, i) => `<i class="${i < Q.log.length ? (Q.log[i].ok ? 'ok' : 'no') : i === Q.i ? 'now' : ''}"></i>`).join('');
+  const lc = langCls(q.s, q.q);
+  const opts = q.o.map((o, i) => { let cls = 'opt ' + langCls(q.s, o); if (Q.picked != null) { if (o === q.a) cls += ' ok'; else if (i === Q.picked) cls += ' no'; } return `<button class="${cls}" data-act="pick" data-i="${i}" dir="auto" ${Q.picked != null ? 'disabled' : ''}>${esc(o)}</button>`; }).join('');
+  const fb = Q.picked == null ? '' : (q.o[Q.picked] === q.a
+    ? `<div class="fb ok"><b>Correct!</b><span dir="auto">${esc(q.e)}</span></div>`
+    : `<div class="fb no"><b>Not quite.</b>The answer is <span dir="auto">“${esc(q.a)}”</span>. <span dir="auto">${esc(q.e)}</span></div>`);
+  return `<div class="qhead"><span class="row">${glyph(s)}<span><b>${esc(Q.title)}</b><br><span class="small mute ${langCls(s.id, ch.t)}" dir="auto">${esc(ch.t)}</span></span></span><button class="btn ghost sm" data-act="quit">Stop</button></div>
+  <div class="dots" style="margin-top:14px" aria-label="Question ${Q.i + 1} of ${Q.qs.length}">${dots}</div>
+  <div class="qtext ${lc}" dir="auto">${esc(q.q)}</div>
+  <div class="row noprint" style="margin:-8px 0 14px"><button class="btn ghost sm" data-act="sayq">Read question</button></div>
+  <div class="opts">${opts}</div>${fb}
+  ${Q.picked != null ? `<div class="row" style="margin-top:16px"><button class="btn" data-act="next" style="flex:1">${Q.i + 1 < Q.qs.length ? 'Next question' : 'See my score'}</button></div>` : ''}`;
+}
+function answer(i) {
+  if (!Q || Q.picked != null) return;
+  const q = Q.qs[Q.i], ok = q.o[i] === q.a; Q.picked = i; if (ok) Q.right++;
+  Q.log.push({ id: q.id, ok, pick: q.o[i] });
+  const u = me();
+  if (u && u.role === 'student') {
+    const before = stats(u.id), att = DB.get('att', []); att.push([u.id, q.s, q.c, ok ? 1 : 0, Date.now()]); if (att.length > 30000) att.splice(0, att.length - 30000); DB.set('att', att);
+    const after = stats(u.id); const won = BADGES.filter(b => !b[2](before) && b[2](after)); if (won.length) toast('New badge: ' + won.map(b => b[0]).join(', ') + '!');
+  }
+  render();
+}
+
+/* ---------- progress and reports ---------- */
+function progressView(u, opts) {
+  const s = stats(u.id);
+  const subj = SUBJ.map(sb => { const b = s.bySubj[sb.id]; const p = b ? Math.round(b.r / b.t * 100) : 0; return `<div class="item"><span class="grow"><b>${esc(sb.name)}</b><br><span class="small mute">${b ? b.t + ' answered' : 'Not started'}</span></span><span style="width:40%">${bar(p, sb.color)}</span><b class="n" style="width:48px;text-align:right">${b ? p + '%' : '-'}</b></div>`; }).join('');
+  const weak = Object.entries(s.byCh).filter(([, b]) => b.t >= 5).map(([id, b]) => [id, Math.round(b.r / b.t * 100), b.t]).sort((a, b) => a[1] - b[1]).slice(0, 4);
+  const days = []; for (let d = 6; d >= 0; d--) { const dt = new Date(); dt.setDate(dt.getDate() - d); days.push([dstr(dt), dt.toLocaleDateString('en-GB', { weekday: 'short' })]); }
+  const att = DB.get('att', []).filter(x => x[0] === u.id), cnt = {}; att.forEach(x => { const k = dstr(x[4]); cnt[k] = (cnt[k] || 0) + 1; });
+  const mx = Math.max(10, ...days.map(d => cnt[d[0]] || 0));
+  return `<div class="print-only"><h2>${esc(school())} - Class 2 progress report</h2><p>${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p></div>
+  <div class="row" style="justify-content:space-between"><div><h1>${esc(opts.title || u.name)}</h1><p class="mute">Last practised: ${ago(s.last)}</p></div>${opts.print ? '<button class="btn ghost noprint" data-act="print">Print or save PDF</button>' : ''}</div>
+  <div class="stats" style="margin-top:16px"><div class="stat"><b>${s.total}</b><span>Questions</span></div><div class="stat"><b>${s.acc}%</b><span>Correct</span></div><div class="stat"><b>${s.streak}</b><span>Day streak</span></div><div class="stat"><b>${s.days.size}</b><span>Days practised</span></div></div>
+  <h2>Last 7 days</h2><div class="card"><div class="week">${days.map(d => `<div><span>${cnt[d[0]] || 0}</span><i style="height:${Math.round((cnt[d[0]] || 0) / mx * 85)}%"></i><span>${d[1]}</span></div>`).join('')}</div></div>
+  <h2>Subjects</h2><div class="card list">${subj}</div>
+  <h2>Needs more practice</h2>${weak.length ? `<div class="card list">${weak.map(([id, p, t]) => { const c = CMAP[id]; return `<a class="item" href="#ch-${id}"><span class="grow"><b class="${langCls(c.s, c.t)}" dir="auto">${esc(c.t)}</b><br><span class="small mute">${esc(SMAP[c.s].name)} · ${t} answered</span></span><b>${p}%</b></a>`; }).join('')}</div>` : '<p class="mute">Answer at least 5 questions in a chapter to see it here.</p>'}
+  <h2>Badges</h2><div class="badges">${BADGES.map(b => `<div class="badge ${b[2](s) ? '' : 'off'}">${medal(b[2](s))}<span><b>${b[0]}</b><span>${b[1]}</span></span></div>`).join('')}</div>`;
+}
+function viewBoard(u) {
+  const rows = users().filter(x => x.role === 'student').map(x => ({ x, s: stats(x.id) })).sort((a, b) => b.s.score - a.s.score);
+  return `<h1>Leaderboard</h1><p class="mute">Points come from correct answers, accuracy and daily streaks, so steady practice wins.</p>
+  <div class="card" style="margin-top:16px;padding:6px 10px"><table><thead><tr><th>#</th><th>Student</th><th class="n">Points</th><th class="n">Correct</th><th class="n">Streak</th></tr></thead><tbody>
+  ${rows.map((r, i) => `<tr class="${r.x.id === u.id || r.x.id === u.child ? 'me' : ''}"><td><b>${i + 1}</b></td><td><b>${esc(r.x.name)}</b>${r.x.sample ? ' <span class="pill">sample</span>' : ''}</td><td class="n">${r.s.score}</td><td class="n">${r.s.acc}%</td><td class="n">${r.s.streak}</td></tr>`).join('')}
+  </tbody></table></div>`;
+}
+
+/* ---------- teacher ---------- */
+function viewClass() {
+  const rows = users().filter(x => x.role === 'student').map(x => ({ x, s: stats(x.id) })).sort((a, b) => a.x.name.localeCompare(b.x.name));
+  const tot = rows.reduce((a, r) => a + r.s.total, 0), right = rows.reduce((a, r) => a + r.s.right, 0);
+  return `<h1>Class overview</h1><p class="mute">${rows.length} students · ${tot} questions answered · ${tot ? Math.round(right / tot * 100) : 0}% correct overall</p>
+  <div class="card" style="margin-top:16px;padding:6px 10px"><table class="stack"><thead><tr><th>Student</th><th class="n">Questions</th><th class="n">Correct</th><th class="n">Streak</th><th>Last active</th></tr></thead><tbody>
+  ${rows.map(r => `<tr class="click" data-act="openstu" data-id="${r.x.id}"><td><a href="#stu-${r.x.id}"><b>${esc(r.x.name)}</b></a>${r.x.sample ? ' <span class="pill">sample</span>' : ''}</td><td class="n">${r.s.total}</td><td class="n">${r.s.acc}%</td><td class="n">${r.s.streak}</td><td>${ago(r.s.last)}</td></tr>`).join('')}
+  </tbody></table></div><p class="small mute" style="margin-top:10px">Tap a student to see their full report.</p>`;
+}
+let bankF = { s: '', t: '' };
+function bankRows() {
+  const t = bankF.t.trim().toLowerCase();
+  const list = BANK.filter(q => (!bankF.s || q.s === bankF.s) && (!t || (q.q + ' ' + q.a + ' ' + q.o.join(' ') + ' ' + CMAP[q.c].t).toLowerCase().includes(t)));
+  return `<p class="mute small">${list.length.toLocaleString()} matching questions${list.length > 60 ? ' · showing the first 60' : ''}</p>
+  <div class="card list">${list.slice(0, 60).map(q => `<div class="item" style="display:block"><span class="pill" style="background:${SMAP[q.s].color};color:#fff">${esc(SMAP[q.s].name)}</span> <span class="small mute ${langCls(q.s, CMAP[q.c].t)}" dir="auto">${esc(CMAP[q.c].t)}</span><br><b class="${langCls(q.s, q.q)}" dir="auto">${esc(q.q)}</b><br><span class="small" dir="auto">Options: ${q.o.map(esc).join(' · ')}</span><br><span class="small" style="color:var(--ok);font-weight:800" dir="auto">Answer: ${esc(q.a)}</span></div>`).join('') || '<div class="item">No questions match.</div>'}</div>`;
+}
+function viewBank() {
+  return `<h1>Question bank</h1><p class="mute">${BANK.length.toLocaleString()} questions across ${SUBJ.length} subjects</p>
+  <div class="grid2" style="margin-top:12px"><div><label for="bs">Subject</label><select id="bs" data-bank="s"><option value="">All subjects</option>${SUBJ.map(s => `<option value="${s.id}" ${bankF.s === s.id ? 'selected' : ''}>${esc(s.name)}</option>`).join('')}</select></div>
+  <div><label for="bt">Search</label><input id="bt" data-bank="t" value="${esc(bankF.t)}" placeholder="e.g. Ramadan, plural, 7 ×"></div></div>
+  <div id="bankList" style="margin-top:14px">${bankRows()}</div>`;
+}
+
+/* ---------- admin ---------- */
+const ROLE = { student: 'Student', parent: 'Parent', teacher: 'Teacher', admin: 'Admin' };
+function viewUsers(u) {
+  const list = users(), studs = list.filter(x => x.role === 'student');
+  return `<h1>Users</h1><p class="mute">${list.length} accounts on this device</p>
+  <div class="card" style="margin-top:16px;padding:6px 10px"><table class="stack"><thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Linked child</th><th>Actions</th></tr></thead><tbody>
+  ${list.map(x => `<tr><td><b>${esc(x.name)}</b>${x.sample ? ' <span class="pill">sample</span>' : ''}</td><td>${esc(x.u)}</td><td>${ROLE[x.role]}</td><td>${x.child ? esc((userById(x.child) || {}).name || '-') : ''}</td><td><div class="row"><button class="btn ghost sm" data-act="pw" data-id="${x.id}">Password</button>${x.id !== u.id ? `<button class="btn ghost sm" data-act="del" data-id="${x.id}">Remove</button>` : ''}</div></td></tr>`).join('')}
+  </tbody></table></div>
+  <h2>Add a user</h2>
+  <form class="card" id="addUser"><div class="grid2">
+    <div><label for="an">Full name</label><input id="an" required></div>
+    <div><label for="au">Username</label><input id="au" required autocapitalize="none" spellcheck="false"></div>
+    <div><label for="ar">Role</label><select id="ar"><option value="student">Student</option><option value="parent">Parent</option><option value="teacher">Teacher</option><option value="admin">Admin</option></select></div>
+    <div><label for="ac">Child (for parents)</label><select id="ac"><option value="">None</option>${studs.map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join('')}</select></div>
+    <div><label for="ap">Password (6 or more characters)</label><input id="ap" type="text" required minlength="6"></div>
+  </div><div class="row" style="margin-top:16px"><button class="btn" type="submit">Add user</button></div></form>`;
+}
+function viewSettings() {
+  return `<h1>Settings</h1>
+  <form class="card" id="schoolForm" style="margin-top:16px"><label for="sn">School name</label><input id="sn" value="${esc(school())}" required><div class="row" style="margin-top:14px"><button class="btn" type="submit">Save name</button></div></form>
+  <h2>Data on this device</h2>
+  <div class="card"><p>All accounts and practice records are saved in this phone's or computer's browser. Copy a backup now and then, and paste it back to restore.</p>
+  <div class="row" style="margin-top:12px"><button class="btn ghost" data-act="backup">Copy backup</button><button class="btn ghost" data-act="restore">Restore backup</button></div>
+  <div class="row" style="margin-top:12px"><button class="btn ghost" data-act="nosample">Remove sample classmates</button><button class="btn red" data-act="wipe">Clear all practice records</button></div></div>
+  <h2>About</h2><div class="card"><p>Sidrah Academy Class 2 · version 1.0</p><p class="mute">${SUBJ.length} subjects · ${SUBJ.reduce((a, s) => a + s.chapters.length, 0)} chapters · ${BANK.length.toLocaleString()} questions · works offline once installed</p><div class="row" style="margin-top:12px">${installBtn()}</div></div>`;
+}
+
+/* ---------- router ---------- */
+function render() {
+  const u = me();
+  if (!u) { renderLogin(); return; }
+  let h = (location.hash || '').slice(1);
+  if (h === 'daily') { if (u.role === 'student') { startQuiz('Daily quiz', dailyQs(), '#home'); return; } h = ''; }
+  const m = h.match(/^(subj|ch|stu)-(.+)$/), route = m ? m[1] : (h || HOME[u.role]), arg = m ? m[2] : null;
+  if (!ALLOW[u.role].includes(route)) { if (location.hash !== '#' + HOME[u.role]) { location.hash = HOME[u.role]; return; } }
+  let body;
+  switch (route) {
+    case 'home': body = viewHome(u); break;
+    case 'subjects': body = viewSubjects(); break;
+    case 'subj': body = viewSubject(u.role === 'parent' && u.child ? userById(u.child) || u : u, arg); break;
+    case 'ch': body = viewChapter(u, arg); break;
+    case 'quiz': body = viewQuiz(u); break;
+    case 'progress': body = installBanner() + progressView(u, { title: 'My progress', print: true }); break;
+    case 'board': body = viewBoard(u); break;
+    case 'child': { const c = u.child && userById(u.child); body = c ? installBanner() + progressView(c, { title: c.name + "'s progress", print: true }) : '<h1>No child linked</h1><p class="mute">Ask the school admin to link your account to your child.</p>'; break; }
+    case 'class': body = viewClass(); break;
+    case 'stu': { const c = userById(arg); body = c ? `<p class="small"><a href="#class">Class</a></p>` + progressView(c, { print: true }) : viewClass(); break; }
+    case 'bank': body = viewBank(); break;
+    case 'users': body = installBanner() + viewUsers(u); break;
+    case 'settings': body = viewSettings(); break;
+    default: body = viewHome(u);
+  }
+  app.innerHTML = shell(u, route, body);
+  if (route !== 'quiz' || (Q && Q.i === 0 && Q.picked == null)) scrollTo(0, 0);
+}
+addEventListener('hashchange', render);
+
+/* ---------- events ---------- */
+function confirmBox(text, act, id, label) { openModal(`<h2 style="margin-top:0">Are you sure?</h2><p>${text}</p><div class="row" style="margin-top:16px"><button class="btn red" data-act="${act}" data-id="${id || ''}">${label}</button><button class="btn ghost" data-act="close">Cancel</button></div>`); }
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) { if (e.target.id === 'modal') closeModal(); return; }
+  const act = b.dataset.act, id = b.dataset.id, u = me();
+  switch (act) {
+    case 'install': doInstall(); break;
+    case 'hidebanner': DB.set('hideBanner', 1); render(); break;
+    case 'close': closeModal(); break;
+    case 'logout': DB.del('sess'); Q = null; location.hash = ''; render(); break;
+    case 'daily': startQuiz('Daily quiz', dailyQs(), '#home'); break;
+    case 'quizsubj': startQuiz(SMAP[id].name, pickFrom(BANK.filter(q => q.s === id), 10), '#subj-' + id); break;
+    case 'quizch': startQuiz(SMAP[CMAP[id].s].name, pickFrom(BANK.filter(q => q.c === id), 10), '#ch-' + id); break;
+    case 'pick': answer(+b.dataset.i); break;
+    case 'next': if (Q) { Q.i++; Q.picked = null; if (Q.i >= Q.qs.length) Q.done = true; render(); scrollTo(0, 0); } break;
+    case 'again': if (Q) startQuiz(Q.title, shuffle(Q.qs), Q.back); break;
+    case 'quit': { const back = Q ? Q.back : '#home'; Q = null; location.hash = back.slice(1); break; }
+    case 'sayq': if (Q) { const q = Q.qs[Q.i]; speak(q.q + '. ' + q.o.join(', '), q.s === 'urd' ? 'ur-PK' : q.s === 'arb' && AR.test(q.q) ? 'ar-SA' : 'en-GB'); } break;
+    case 'read': { const c = CMAP[id], s = SMAP[c.s]; speak(c.intro + ' ' + (c.sets || []).map(st => st.pairs.map(p => p[0] + ', ' + p[1]).join('. ')).join('. '), s.id === 'urd' ? 'ur-PK' : 'en-GB'); break; }
+    case 'print': try { window.print(); } catch (err) { toast('Printing is not available here. Open the installed app to print.'); } break;
+    case 'openstu': if (!e.target.closest('a')) location.hash = 'stu-' + id; break;
+    case 'pw': { const x = userById(id); openModal(`<h2 style="margin-top:0">New password for ${esc(x.name)}</h2><form id="pwForm" data-id="${id}"><label for="np">New password (6 or more characters)</label><input id="np" type="text" minlength="6" required><div class="row" style="margin-top:16px"><button class="btn" type="submit">Save password</button><button class="btn ghost" type="button" data-act="close">Cancel</button></div></form>`); break; }
+    case 'del': { const x = userById(id); confirmBox(`Remove <b>${esc(x.name)}</b> and their practice records?`, 'delok', id, 'Remove'); break; }
+    case 'delok': saveUsers(users().filter(x => x.id !== id).map(x => x.child === id ? Object.assign(x, { child: '' }) : x)); DB.set('att', DB.get('att', []).filter(a => a[0] !== id)); closeModal(); toast('User removed.'); render(); break;
+    case 'nosample': confirmBox('Remove the 5 sample classmates and their records?', 'nosampleok', '', 'Remove samples'); break;
+    case 'nosampleok': { const ids = users().filter(x => x.sample).map(x => x.id); saveUsers(users().filter(x => !x.sample)); DB.set('att', DB.get('att', []).filter(a => !ids.includes(a[0]))); closeModal(); toast('Sample classmates removed.'); render(); break; }
+    case 'wipe': confirmBox('This deletes every practice record on this device. Accounts stay.', 'wipeok', '', 'Clear records'); break;
+    case 'wipeok': DB.set('att', []); closeModal(); toast('Practice records cleared.'); render(); break;
+    case 'backup': { const data = JSON.stringify({ app: 'sidrah-class2', v: 1, school: school(), users: users(), att: DB.get('att', []) }); try { navigator.clipboard.writeText(data).then(() => toast('Backup copied. Paste it into a note or message to keep it safe.'), () => openModal(`<h2 style="margin-top:0">Backup</h2><p>Select all and copy this text:</p><textarea readonly>${esc(data)}</textarea><div class="row" style="margin-top:12px"><button class="btn" data-act="close">Done</button></div>`)); } catch (err) { openModal(`<h2 style="margin-top:0">Backup</h2><textarea readonly>${esc(data)}</textarea><div class="row" style="margin-top:12px"><button class="btn" data-act="close">Done</button></div>`); } break; }
+    case 'restore': openModal(`<h2 style="margin-top:0">Restore a backup</h2><form id="restoreForm"><label for="rb">Paste the backup text</label><textarea id="rb" required></textarea><p class="small mute">This replaces all accounts and records on this device.</p><div class="row" style="margin-top:12px"><button class="btn" type="submit">Restore</button><button class="btn ghost" type="button" data-act="close">Cancel</button></div></form>`); break;
+  }
+});
+document.addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target;
+  if (f.id === 'loginForm') {
+    const un = $('#lu').value.trim().toLowerCase(), pw = $('#lp').value;
+    const x = users().find(v => v.u === un);
+    if (!x || x.h !== hash(pw, x.salt)) { renderLogin('Username or password is not right. Please try again.'); $('#lu').value = un; return; }
+    DB.set('sess', x.id); location.hash = HOME[x.role]; render(); return;
+  }
+  if (f.id === 'addUser') {
+    const name = $('#an').value.trim(), un = $('#au').value.trim().toLowerCase(), role = $('#ar').value, pw = $('#ap').value, child = $('#ac').value;
+    if (!/^[a-z0-9._-]{3,}$/.test(un)) return toast('Username: 3 or more letters or numbers, no spaces.');
+    if (users().some(v => v.u === un)) return toast('That username is already taken.');
+    if (pw.length < 6) return toast('Password needs 6 or more characters.');
+    const salt = Math.random().toString(36).slice(2, 10);
+    saveUsers(users().concat([{ id: uid(), u: un, name, role, salt, h: hash(pw, salt), child: role === 'parent' ? child : '' }]));
+    toast(name + ' added.'); render(); return;
+  }
+  if (f.id === 'pwForm') {
+    const pw = $('#np').value; if (pw.length < 6) return toast('Password needs 6 or more characters.');
+    saveUsers(users().map(x => { if (x.id === f.dataset.id) { x.salt = Math.random().toString(36).slice(2, 10); x.h = hash(pw, x.salt); } return x; }));
+    closeModal(); toast('Password changed.'); return;
+  }
+  if (f.id === 'schoolForm') { DB.set('school', $('#sn').value.trim() || 'Sidrah Academy'); toast('School name saved.'); render(); return; }
+  if (f.id === 'restoreForm') {
+    try { const d = JSON.parse($('#rb').value); if (d.app !== 'sidrah-class2' || !Array.isArray(d.users)) throw 0; DB.set('users', d.users); DB.set('att', d.att || []); if (d.school) DB.set('school', d.school); closeModal(); toast('Backup restored.'); if (!me()) DB.del('sess'); render(); }
+    catch (err) { toast('That text is not a Sidrah backup.'); }
+  }
+});
+document.addEventListener('input', e => {
+  const k = e.target.dataset && e.target.dataset.bank; if (!k) return;
+  bankF[k] = e.target.value; const l = $('#bankList'); if (l) l.innerHTML = bankRows();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ---------- offline support ---------- */
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+  try { navigator.serviceWorker.register('sw.js').catch(() => {}); } catch (e) {}
+}
+render();
+}
+</script>
+</body>
+</html>
